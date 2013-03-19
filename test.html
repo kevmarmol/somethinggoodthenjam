@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>audio record test</title>
+	<style type="text/css">
+	#video {
+		border: 1px solid red;
+		width: 300px;
+		height: 300px;
+	}
+	</style>
+</head>
+<body>
+
+	<input onclick="startRecording()" type="button" value="start recording" />
+
+    <video id="videoStream" autoplay></video>
+
+	<script>
+
+	//window.addEventListener('DOMContentLoaded', function () {
+
+		var recorder;
+		var audio = document.querySelector('audio');
+		var video = document.querySelector('#videoStream');
+		var mediaStreamSource;
+		var success = function (stream) {
+			var context = new webkitAudioContext();
+			mediaStreamSource = context.createMediaStreamSource(stream);
+			
+			video.src = webkitURL.createObjectURL(stream);
+			// recorder = new Recorder(mediaStreamSource);
+			// recorder.record();
+		};
+
+		var fail = function (error) {
+			console.log(error);
+		};
+
+		var startRecording = function () {
+			navigator.webkitGetUserMedia({
+				video: true
+			},
+			success,
+			fail);
+		}
+
+		var stopRecording = function () {
+			mediaStreamSource.stop();
+			// recorder.exportWav(function (stream) {
+			// 	audio.src = window.webkitURL.createObjectURL(stream);
+			// });
+		}
+
+		// var start = document.querySelector('#start');
+		// var stop = document.querySelector('#stop');
+
+		// start.click(startRecording);
+		// stop.click(stopRecording);
+
+
+		// if (navigator.webkitGetUserMedia) {
+
+		// 	var context = new webkitAudioContext();
+
+		// 	navigator.webkitGetUserMedia({audio: true}, onSuccess, onFail);
+
+		// 	function onSuccess (stream) {
+		// 		//video.src = webkitURL.createObjectURL(stream);
+		// 		theAudio 
+		// 	}
+
+		// 	function onFail (error) {
+		// 		console.log(error);
+		// 	}
+
+		// 	var btnStop = document.querySelector('#stop');
+
+		// }
+
+	//});
+
+	</script>
+
+</body>
+</html>
