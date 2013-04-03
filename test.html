@@ -17,68 +17,107 @@
     <video id="videoStream" autoplay></video>
 
 	<script>
+	
+	navigator.getUserMedia 
+	|| (navigator.getUserMedia = navigator.mozGetUserMedia 
+	|| navigator.webkitGetUserMedia 
+	|| navigator.msGetUserMedia); 
 
-	//window.addEventListener('DOMContentLoaded', function () {
+	if (navigator.getUserMedia) { 
+		navigator.getUserMedia({ video: true, audio: true }, onSuccess, onError); 
+	} else { 
+		alert('getUserMedia is not supported in this browser.'); 
+	}
+	
+	function onSuccess(stream) { 
+		var video = document.getElementById('videoStream'); 
+		var videoSource; 
 
-		var recorder;
-		var audio = document.querySelector('audio');
-		var video = document.querySelector('#videoStream');
-		var mediaStreamSource;
-		var success = function (stream) {
-			var context = new webkitAudioContext();
-			mediaStreamSource = context.createMediaStreamSource(stream);
+		if (window.webkitURL) { 
+			videoSource = window.webkitURL.createObjectURL(stream); 
+		} else { 
+			source = stream; 
+		} 
+
+		video.src = videoSource;
+		
+		console.log(stream); 
+
+		peerToPeer(stream);
+		// more code will go here 
+	} 
+
+	function onError() { 
+		alert('There has been a problem retrieving the streams - did you allow access?'); 
+	}
+
+	function peerToPeer(stream){
+		var pc1 = new webkitRTCPeerConnection();
+		console.log(typeof stream);
+		pc1.addStream(stream); 
+	}
+
+	// //window.addEventListener('DOMContentLoaded', function () {
+
+	// 	var recorder;
+	// 	var audio = document.querySelector('audio');
+	// 	var video = document.querySelector('#videoStream');
+	// 	var mediaStreamSource;
+	// 	var success = function (stream) {
+	// 		var context = new webkitAudioContext();
+	// 		mediaStreamSource = context.createMediaStreamSource(stream);
 			
-			video.src = webkitURL.createObjectURL(stream);
-			// recorder = new Recorder(mediaStreamSource);
-			// recorder.record();
-		};
+	// 		video.src = webkitURL.createObjectURL(stream);
+	// 		// recorder = new Recorder(mediaStreamSource);
+	// 		// recorder.record();
+	// 	};
 
-		var fail = function (error) {
-			console.log(error);
-		};
+	// 	var fail = function (error) {
+	// 		console.log(error);
+	// 	};
 
-		var startRecording = function () {
-			navigator.webkitGetUserMedia({
-				video: true
-			},
-			success,
-			fail);
-		}
+	// 	var startRecording = function () {
+	// 		navigator.webkitGetUserMedia({
+	// 			video: true
+	// 		},
+	// 		success,
+	// 		fail);
+	// 	}
 
-		var stopRecording = function () {
-			mediaStreamSource.stop();
-			// recorder.exportWav(function (stream) {
-			// 	audio.src = window.webkitURL.createObjectURL(stream);
-			// });
-		}
+	// 	var stopRecording = function () {
+	// 		mediaStreamSource.stop();
+	// 		// recorder.exportWav(function (stream) {
+	// 		// 	audio.src = window.webkitURL.createObjectURL(stream);
+	// 		// });
+	// 	}
 
-		// var start = document.querySelector('#start');
-		// var stop = document.querySelector('#stop');
+	// 	// var start = document.querySelector('#start');
+	// 	// var stop = document.querySelector('#stop');
 
-		// start.click(startRecording);
-		// stop.click(stopRecording);
+	// 	// start.click(startRecording);
+	// 	// stop.click(stopRecording);
 
 
-		// if (navigator.webkitGetUserMedia) {
+	// 	// if (navigator.webkitGetUserMedia) {
 
-		// 	var context = new webkitAudioContext();
+	// 	// 	var context = new webkitAudioContext();
 
-		// 	navigator.webkitGetUserMedia({audio: true}, onSuccess, onFail);
+	// 	// 	navigator.webkitGetUserMedia({audio: true}, onSuccess, onFail);
 
-		// 	function onSuccess (stream) {
-		// 		//video.src = webkitURL.createObjectURL(stream);
-		// 		theAudio 
-		// 	}
+	// 	// 	function onSuccess (stream) {
+	// 	// 		//video.src = webkitURL.createObjectURL(stream);
+	// 	// 		theAudio 
+	// 	// 	}
 
-		// 	function onFail (error) {
-		// 		console.log(error);
-		// 	}
+	// 	// 	function onFail (error) {
+	// 	// 		console.log(error);
+	// 	// 	}
 
-		// 	var btnStop = document.querySelector('#stop');
+	// 	// 	var btnStop = document.querySelector('#stop');
 
-		// }
+	// 	// }
 
-	//});
+	// //});
 
 	</script>
 
