@@ -27,4 +27,4 @@ var server = http.createServer(function(request, response){
 
 server.listen(port,host, function(){
 	console.log('currently listening from' + host + 'and Port:' +port);
-})
+});
