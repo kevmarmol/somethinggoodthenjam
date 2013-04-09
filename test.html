@@ -15,9 +15,13 @@
 	<input onclick="startRecording()" type="button" value="start recording" />
 
     <video id="videoStream" autoplay></video>
+    <video id="vid2" autoplay></video>
 
 	<script>
-	
+	var servers = null;
+	var pc1 = new webkitRTCPeerConnection(servers);
+	var pc2 = new webkitRTCPeerConnection(servers);
+
 	navigator.getUserMedia 
 	|| (navigator.getUserMedia = navigator.mozGetUserMedia 
 	|| navigator.webkitGetUserMedia 
@@ -52,10 +56,46 @@
 	}
 
 	function peerToPeer(stream){
-		var pc1 = new webkitRTCPeerConnection();
+		
 		console.log(typeof stream);
-		pc1.addStream(stream); 
+		pc1.addStream(stream);
+
+		pc1.createOffer(gotDescription1);
+		pc2.onaddstream = gotRemoteStream;
+		//pc2.addStream(stream);
+
+		pc1.onicecandidate = iceCallback1; 
+		pc2.onicecandidate = iceCallback2;
 	}
+
+	function gotDescription1(desc){
+		pc1.setLocalDescription(desc);
+		pc2.setRemoteDescription(desc);
+		pc2.createAnswer(gotDescription2);
+	}
+
+	function gotDescription2(desc){
+	  pc2.setLocalDescription(desc);
+	  pc1.setRemoteDescription(desc);
+	}
+
+	function gotRemoteStream(e){
+		console.log(e);
+  		document.getElementById("vid2").src = URL.createObjectURL(e.stream);
+	}
+
+	function iceCallback1(event){
+	  if (event.candidate) {
+	    pc2.addIceCandidate(new RTCIceCandidate(event.candidate));
+	  }
+	}
+	      
+	function iceCallback2(event){
+	  if (event.candidate) {
+	    pc1.addIceCandidate(new RTCIceCandidate(event.candidate));
+	  }
+	}
+	
 
 	// //window.addEventListener('DOMContentLoaded', function () {
 

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>audio record test</title>
+    <style type="text/css">
+    #video {
+        border: 1px solid red;
+        width: 300px;
+        height: 300px;
+    }
+    </style>
+</head>
+<body>
+    <h3>Socket.io and WebRTC</h3>
+
+    <input onclick="startRecording()" type="button" value="start recording" />
+
+    <video id="videoStream" autoplay></video>
+    <video id="vid2" autoplay></video>
+
+</body>
+<script src="http://somethinggoodthenjam.dev:8080/socket.io/socket.io.js"></script>
+<script>
+
+     /* Web Sockets stuff */
+
+    var socket = io.connect('http://somethinggoodthenjam.dev:8080');
+    socket.on('handshake', function (data) {
+        console.log(data);
+    });
+
+    socket.on('returnFromServer', function(data){
+        //var webcams = data;
+        console.log(data);
+    });
+
+
+    /* WebRTC stuff */
+
+    var servers = null;
+    var pc1 = new webkitRTCPeerConnection(servers);
+    var pc2 = new webkitRTCPeerConnection(servers);
+
+    navigator.getUserMedia 
+    || (navigator.getUserMedia = navigator.mozGetUserMedia 
+    || navigator.webkitGetUserMedia 
+    || navigator.msGetUserMedia); 
+
+    if (navigator.getUserMedia) { 
+        navigator.getUserMedia({ video: true, audio: true }, onSuccess, onError); 
+    } else { 
+        alert('getUserMedia is not supported in this browser.'); 
+    }
+    
+    function onSuccess(stream) { 
+        var video = document.getElementById('videoStream'); 
+        var videoSource; 
+
+        if (window.webkitURL) { 
+            videoSource = window.webkitURL.createObjectURL(stream); 
+        } else { 
+            source = stream; 
+        } 
+
+        video.src = videoSource;
+        
+        console.log(stream); 
+
+        peerToPeer(stream);
+        // more code will go here 
+
+    } 
+
+    function onError() { 
+        alert('There has been a problem retrieving the streams - did you allow access?'); 
+    }
+
+    function peerToPeer(stream){  
+        console.log(typeof stream);
+
+        socket.emit('sendData', stream)
+        
+        pc1.addStream(stream);
+
+        pc1.createOffer(gotDescription1);
+        pc2.onaddstream = gotRemoteStream;
+        //pc2.addStream(stream);
+
+        pc1.onicecandidate = iceCallback1; 
+        pc2.onicecandidate = iceCallback2;
+    }
+
+    function gotDescription1(desc){
+        pc1.setLocalDescription(desc);
+        pc2.setRemoteDescription(desc);
+        pc2.createAnswer(gotDescription2);
+    }
+
+    function gotDescription2(desc){
+        pc2.setLocalDescription(desc);
+        pc1.setRemoteDescription(desc);
+    }
+
+    function gotRemoteStream(e){
+        console.log(e);
+        document.getElementById("vid2").src = URL.createObjectURL(e.stream);
+    }
+
+    function iceCallback1(event){
+      if (event.candidate) {
+        pc2.addIceCandidate(new RTCIceCandidate(event.candidate));
+      }
+    }
+          
+    function iceCallback2(event){
+      if (event.candidate) {
+        pc1.addIceCandidate(new RTCIceCandidate(event.candidate));
+      }
+    }
+
+
+</script>
+</html>
