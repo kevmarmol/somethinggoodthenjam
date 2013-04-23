@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>audio record test</title>
+	<style type="text/css">
+	@font-face {
+	    font-family: 'MeteoconsRegular';
+	    src: url('meteocons-webfont.eot');
+	    src: url('meteocons-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('meteocons-webfont.woff') format('woff'),
+	         url('meteocons-webfont.ttf') format('truetype'),
+	         url('meteocons-webfont.svg#MeteoconsRegular') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+
+	body {
+		margin:0px;
+		background-color:#000000;
+		font-family: "Lora", arial;
+	}
+	#videoContainer {
+		width: 100%;
+		height:100%;
+		overflow:hidden;
+	}
+	#videoStream {
+		width: 100%;
+		height:100%;
+	}
+
+	#topBar {
+		width: 100%;
+		height: 30px;
+		background-color:#CCCCCC;
+		color:#FFFFFF;
+	}
+	#videoOverlay {
+		height: 100%;
+		position: absolute;
+		width: 30%;
+		right: 0px;
+		top: 30px;
+		background-image: -webkit-gradient(
+		  linear, right top, left top, from(rgba(0,0,0,1)),
+		  to(rgba(0,0,0,0.2)), color-stop(100%,#333333)
+		);
+		color:#FFFFFF;
+	}
+	#videoOverlay .section {
+		width: 100%;
+		height: auto;
+		margin-bottom:16px;
+		text-align:center;
+	}
+	#videoOverlay .section #map {
+		width: 100%;
+		height: 160px;
+		display: block;
+	}
+	#videoOverlay .section.weather {
+		background-position:top center;
+		background-repeat:no-repeat;
+		height:316px;
+		width: 100%;
+	}
+	#videoOverlay .section.time {
+		width: 100%;
+		text-align: center;
+	}
+
+	h3 .location {
+		display:block;
+		font-size:3.4em;
+		font-weight: normal;
+		text-transform: uppercase;
+	}
+	h3 .country {
+
+	}
+
+	h3 .city {
+		font-size: 1.4em;
+	}
+	.temp, .weatherLabel {
+		width: 100%;
+		text-align: center;
+		display: block;
+		padding-top: 8px;
+		font-size: 1.4em;
+	}
+	.weatherLabel {
+		padding-top: 252px;
+		font-size: 2em;
+	}
+	.hours {
+		font-size: 3em;
+	}
+	.hours:after {
+		content: ':';
+	}
+	.mins {
+		font-size:3em;
+	}
+	</style>
+
+ <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPLye9CJqotI26gD6WSqCbyyONy8aTNms&sensor=false">
+    </script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+	<div id="topBar"></div>
+	<div id="videoContainer">
+	    <div id="videoOverlay">
+
+	    	<div class="section">
+	    		<h3>Connected to <span class="location country"></span><span class="location city"></span><span class="latlng"></span></h3>
+		    	<span id="map" />
+		    	<div id="changeVideoControls">
+		    		<span class="arrowLeft">Go left</span>
+		    		<a class="videoOption">Change video</a>
+		    		<span class="rightArrow">Go right</span>
+		    	</div>
+	    	</div>
+
+	    	<div class="section weather">
+	    		<span class="weatherLabel">12/9&deg;C</span>
+	    		<span class="temp">12/9&deg;C</span>
+	    	</div>
+
+	    	<div class="section time">
+	    		<span class="hours">15</span><span class="mins">22</span>
+	    	</div>
+
+	    </div>
+	    <video id="videoStream" autoplay></video>
+
+	</div>
+
+
+</body>
+
+	<script>
+ function getGeoLocation() {
+
+            if (navigator.geolocation) {
+
+                navigator.geolocation.getCurrentPosition(function (position) {
+                	console.log('LOC:'+ position.coords);
+                   return position.coords;
+
+
+                });
+
+            }
+
+        }
+
+
+	
+	var lat = "51.024324";
+	var lng = "-0.012344";
+	var clientTime = "15:51";
+	getGeoLocation();
+	var locationAddress = getLocation(lat, lng);
+	var weather = getWeather(lat, lng);
+	var getTime = getLocalTime();
+
+	
+
+
+
+	function getLocation(lat, lng){
+		//get geocoded location data 
+		var httpCall = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng+"&sensor=false";
+		var locationArr = [];
+		$.ajax({
+		  url: httpCall
+		}).done(function ( data ) {
+
+
+		    
+		    $.each(data.results[0].address_components, function(i, add){
+		    	if($.inArray('locality',add.types) != -1 || $.inArray('country',add.types) != -1){
+		    		locationArr.push(add.long_name);
+		    	}
+
+		    });
+			setLocationLabel(locationArr);
+
+		});
+	}
+
+	function setLocationLabel(locationArr) {
+		console.log('label: '+locationArr[0]);
+		$(".city").html(locationArr[1]);
+		$(".country").html(locationArr[0]);
+		$(".latlng").html(lat+", "+lng);
+	}
+
+	function setWeatherIcon(weatherString, icon, temp){
+		$(".weatherLabel").html(weatherString);
+		$(".temp").html(temp+"&deg;C");
+		$(".weather").css("backgroundImage", "url("+icon+".png)");
+	}
+
+	function getWeather(lat, lng) {
+
+		
+
+		var httpCall = "http://api.openweathermap.org/data/2.1/find/city?cnt=1&lat="+lat+"&lng="+lng;
+		
+		$.ajax({
+		  url: httpCall,
+		  dataType: 'jsonp',
+		  crossDomain: true
+		}).done(function ( data ) {
+			console.log(data);
+			var temp = Math.round(data.list[0].main.temp - 273.15); //convert from kelvins to celsius
+			var weather = data.list[0].weather[0].main;
+			var weatherIcon = data.list[0].weather[0].icon;
+			
+			setWeatherIcon(weather, weatherIcon, temp);
+		    
+		 /*  $.each(data.results[0].address_components, function(i, add){
+		    	if($.inArray('locality',add.types) != -1 || $.inArray('country',add.types) != -1){
+		    		locationArr.push(add.long_name);
+		    	}
+
+		    });
+	
+		*/
+
+		});
+	}
+
+
+	function getLocalTime() {
+		// Not required - get from client in a string 
+		var httpCall = "http://www.earthtools.org/timezone/33.137551/-80.507813";
+		$.ajax({
+		  url: httpCall
+		}).done(function ( data ) {
+			console.log(data);
+			var diff = data.timezone.offset;
+			var currentTime = new Date();
+			var timeHours = currentTime.getHours() + diff;
+			console.log(timeHours);
+
+
+		});
+	}
+
+
+	navigator.getUserMedia 
+	|| (navigator.getUserMedia = navigator.mozGetUserMedia 
+	|| navigator.webkitGetUserMedia 
+	|| navigator.msGetUserMedia); 
+
+	if (navigator.getUserMedia) { 
+		navigator.getUserMedia({ video: true, audio: true }, onSuccess, onError); 
+	} else { 
+		alert('getUserMedia is not supported in this browser.'); 
+	}
+	
+	function onSuccess(stream) { 
+		var video = document.getElementById('videoStream'); 
+		var videoSource; 
+
+		if (window.webkitURL) { 
+			videoSource = window.webkitURL.createObjectURL(stream); 
+		} else { 
+			source = stream; 
+		} 
+
+		video.src = videoSource;
+		
+		console.log(stream); 
+
+	
+	} 
+
+	function onError() { 
+		alert('There has been a problem retrieving the streams - did you allow access?'); 
+	}
+
+      function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(lat, lng),
+          zoom: 3,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map"),
+            mapOptions);
+         var image = 'lbi-marker.png';
+         var marker = new google.maps.Marker({
+		    position: mapOptions.center,
+		    title:"Hello World!",
+		    icon: image
+		});
+
+		// To add the marker to the map, call setMap();
+		marker.setMap(map);
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+     
+
+
+
+	</script>
+</html>
