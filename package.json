@@ -1,0 +1,9 @@
+{
+  "name": "somethinggoodthenjam",
+  "version": "0.1.0",
+  "devDependencies": {
+    "socket.io": "~0.9",
+    "grunt": "~0.4.0",
+    "grunt-contrib-jshint": "~0.4.3"
+  }
+}
