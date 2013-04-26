@@ -1,7 +1,8 @@
 var express = require('express');
+var app = express();
 
-express.use(express.logger('dev'));
+app.get('/', function (req, res) {
+	res.send('test');
+});
 
-express.get('maps.json', function (req, res) {
-
-})
+app.listen(3000);
