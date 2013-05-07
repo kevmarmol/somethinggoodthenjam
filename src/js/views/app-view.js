@@ -1,9 +1,8 @@
 define([
 	'app',
-	'view/map',
+	'views/map',
 	'text!../../templates/view/main.html'
 ], function (App, MapView, MainTemplate) {
-
 	var AppView = Backbone.View.extend({
 
 		el: '#app',
@@ -11,15 +10,7 @@ define([
 		template: MainTemplate,
 
 		initialize: function () {
-			var Map;
-
-			this.render();
-
-			Map = new MapView();
-		},
-
-		render: function () {
-			this.$el.html(_.template(MainTemplate, {}));
+			new MapView();
 		}
 
 	});
