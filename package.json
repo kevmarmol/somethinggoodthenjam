@@ -2,9 +2,13 @@
   "name": "somethinggoodthenjam",
   "version": "0.1.0",
   "devDependencies": {
+    "grunt": "~0.4.1",
     "socket.io": "~0.9",
-    "grunt": "~0.4.0",
     "grunt-contrib-jshint": "~0.4.3",
-    "express": "~3.2.0"
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-watch": "~0.4.0",
+    "express": "~3.2.2",
+    "jade": "~0.30.0",
+    "mongodb": "~1.3.1"
   }
 }
