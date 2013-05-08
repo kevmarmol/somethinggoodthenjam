@@ -69,7 +69,7 @@
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
             //send this via socket
-            socket.emit('sendLoc', 'test');
+            socket.emit('sendLocation', data);
         });
     }
     socket.on('connect', onSocketOpened);
@@ -85,6 +85,15 @@
 
   function onSocketOpened(data) {
     console.log('Socket opened.');
+    if (navigator.geolocation) {
+
+            navigator.geolocation.getCurrentPosition(function (position) {
+                 var lat = position.coords.latitude;
+                 var lon = position.coords.longitude;
+                 console.log('my lat is:' + lat +'my long is : '+ lon);
+            });
+
+    }
   }
 
   function onSocketReady(data) {
