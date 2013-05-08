@@ -5,6 +5,7 @@ body {
 	width: 100%;
 }
 
+#app,
 .map {
 	height: 100%;
 	margin: 0;
