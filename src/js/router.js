@@ -6,11 +6,16 @@ define([
 	var AppRouter = Backbone.Router.extend({
 
 		routes: {
-			'': 'index'
+			'': 'index',
+			'window/:id': 'window'
 		},
 
 		index: function () {
 			var home = new AppView();
+		},
+
+		window: function () {
+			var windowView = new WindowView();
 		}
 
 	});

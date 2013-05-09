@@ -29,6 +29,8 @@ define([
 
 			this.map = new google.maps.Map(this.el, options);
 
+			this.windows = new google.maps.LatLngBounds(null);
+
 			return this;
 
 		},
@@ -48,14 +50,26 @@ define([
 		addWindowToMap: function (data) {
 			var latLng = new google.maps.LatLng(data.latitude, data.longitude);
 			var options = {
+				id: data._id,
+				icon: {
+					size: new google.maps.Size(66, 57),
+					url: '/src/images/lbi-marker.png'
+				},
 				map: this.map,
 				position: latLng
 
 			};
 			var googleMarker = new google.maps.Marker(options);
-			this.windows = new google.maps.LatLngBounds(latLng);
-			this.windows.extend(latLng);
 
+			google.maps.event.addListener(googleMarker, 'click', this.onMarkerClick);
+
+			this.map.fitBounds(this.windows.extend(latLng));
+
+			return this;
+		},
+
+		onMarkerClick: function (event) {
+			console.log(event);
 			return this;
 		},
 
