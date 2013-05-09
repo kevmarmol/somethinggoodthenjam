@@ -16,10 +16,11 @@
 
   function initialize() {
     console.log("Initializing; room=" + appConfig.roomKey);
+
     card = $("#card").get(0);
     localVideo = $("#localVideo").get(0);
     miniVideo = $("#miniVideo").get(0);
-    remoteVideo = $("#remoteVideo").get(0);
+    emoteVideo = $("#remoteVideo").get(0);
     footer = $("#footer").get(0);
 
     $('#container').on('click', '#hangup', onHangup);
@@ -65,18 +66,21 @@
     console.log("Opening Socket.");
     socket = io.connect();
     socket.emit('id', appConfig);
-<<<<<<< HEAD
-=======
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
             //send this via socket
             socket.emit('sendLocation', data);
         });
     }
->>>>>>> e8fc746640b2799897030e9d58035ea25b2f0e17
     socket.on('connect', onSocketOpened);
     socket.on('ready', onSocketReady);
     socket.on('message', onSocketMessage);
+    socket.on('printLoc', onPrintLoc);
+  }
+
+  function onPrintLoc(location) {
+    console.log('returned location');
+    console.log(location);
   }
 
   function onSocketOpened(data) {
@@ -463,5 +467,5 @@
     return sdpLines;
   }
 
-  $(initialize());
+  initialize();
 })();
