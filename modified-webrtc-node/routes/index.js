@@ -19,10 +19,6 @@
         sockets[id].emit('ready');
       }
     });
-    
-    socket.on('sendLoc', function(data) {
-      socket.emit("printLoc", data);
-    });
 
     socket.on('message', function (data) {
       socket.get('room', function(err, room) {

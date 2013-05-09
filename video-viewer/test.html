@@ -143,14 +143,48 @@
 </body>
 
 	<script>
+
+
+	getGeoLocation();
+
+
  function getGeoLocation() {
 
             if (navigator.geolocation) {
 
                 navigator.geolocation.getCurrentPosition(function (position) {
                 	console.log('LOC:'+ position.coords);
-                   return position.coords;
+                   console.log(position.coords);
 
+					var lat = position.coords.latitude;
+					var lng = position.coords.longitude;
+					var currentTime = new Date();
+					var timeHours = currentTime.getHours();
+					var timeMins = currentTime.getMinutes();
+					var clientTime = timeHours+":"+timeMins;
+					var locationAddress = getLocation(lat, lng);
+					var weather = getWeather(lat, lng);
+					var getTime = getLocalTime();
+
+					function initialize() {
+				        var mapOptions = {
+				          center: new google.maps.LatLng(lat, lng),
+				          zoom: 3,
+				          mapTypeId: google.maps.MapTypeId.ROADMAP
+				        };
+				        var map = new google.maps.Map(document.getElementById("map"),
+				            mapOptions);
+				         var image = 'lbi-marker.png';
+				         var marker = new google.maps.Marker({
+						    position: mapOptions.center,
+						    title:"Hello World!",
+						    icon: image
+						});
+
+						// To add the marker to the map, call setMap();
+						marker.setMap(map);
+				    }
+				    google.maps.event.addDomListener(window, 'load', initialize);
 
                 });
 
@@ -160,14 +194,6 @@
 
 
 	
-	var lat = "51.024324";
-	var lng = "-0.012344";
-	var clientTime = "15:51";
-	getGeoLocation();
-	var locationAddress = getLocation(lat, lng);
-	var weather = getWeather(lat, lng);
-	var getTime = getLocalTime();
-
 	
 
 
@@ -286,26 +312,7 @@
 		alert('There has been a problem retrieving the streams - did you allow access?'); 
 	}
 
-      function initialize() {
-        var mapOptions = {
-          center: new google.maps.LatLng(lat, lng),
-          zoom: 3,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("map"),
-            mapOptions);
-         var image = 'lbi-marker.png';
-         var marker = new google.maps.Marker({
-		    position: mapOptions.center,
-		    title:"Hello World!",
-		    icon: image
-		});
-
-		// To add the marker to the map, call setMap();
-		marker.setMap(map);
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
-
+      
      
 
 

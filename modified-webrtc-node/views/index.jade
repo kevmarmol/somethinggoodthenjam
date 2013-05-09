@@ -1,14 +1,33 @@
 extends layout
 
 block content
-  #container)
+  #topBar
+  #container
+    #videoOverlay
+      .section
+        h3
+          | Connected to
+          span.location.country
+          span.location.city
+          span.latlng
+        span#map
+        #changeVideoControls
+          span.arrowLeft Go left
+          a.videoOption Change video
+          span.rightArrow Go right
+      .section.weather
+        span.weatherLabel 12/9°C
+        span.temp 12/9°C
+      .section.time
+        span.hours 15
+        span.mins 22
     #card
       #local
-        video#localVideo(width='100%', height='100%', autoplay='autoplay')
+        video#localVideo(autoplay='autoplay')
       #remote
-        video#remoteVideo(width='100%', height='100%', autoplay='autoplay')
+        video#remoteVideo(autoplay='autoplay')
         #mini
-          video#miniVideo(width='100%', height='100%', autoplay='autoplay')
+          video#miniVideo(autoplay='autoplay')
     #footer
     a(href='http://www.webrtc.org')
       img#logo(alt='WebRTC', src='/images/webrtc_black_20p.png')

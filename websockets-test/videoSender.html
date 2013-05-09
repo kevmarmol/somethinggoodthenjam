@@ -21,25 +21,21 @@
 </body>
 <script src="http://somethinggoodthenjam.dev:8080/socket.io/socket.io.js"></script>
 <script>
-
-     /* Web Sockets stuff */
-
     var socket = io.connect('http://somethinggoodthenjam.dev:8080');
     socket.on('handshake', function (data) {
         console.log(data);
     });
 
-    socket.on('returnFromServer', function(data){
-        //var webcams = data;
-        console.log(data);
-    });
 
-
-    /* WebRTC stuff */
+    /* sender */
+    /*
+        1.  Get user media
+        2.  get stream object
+        3.  Send to videohandler js
+    */
 
     var servers = null;
     var pc1 = new webkitRTCPeerConnection(servers);
-    var pc2 = new webkitRTCPeerConnection(servers);
 
     navigator.getUserMedia 
     || (navigator.getUserMedia = navigator.mozGetUserMedia 
@@ -63,61 +59,128 @@
         } 
 
         video.src = videoSource;
-        
-        console.log(stream); 
+
+
+
+
+
+
 
         peerToPeer(stream);
         // more code will go here 
-
     } 
 
     function onError() { 
         alert('There has been a problem retrieving the streams - did you allow access?'); 
     }
 
-    function peerToPeer(stream){  
-        console.log(typeof stream);
-
-        socket.emit('sendData', stream)
+    function peerToPeer(stream){
         
+
         pc1.addStream(stream);
 
         pc1.createOffer(gotDescription1);
-        pc2.onaddstream = gotRemoteStream;
+     //   pc2.onaddstream = gotRemoteStream;
         //pc2.addStream(stream);
 
         pc1.onicecandidate = iceCallback1; 
-        pc2.onicecandidate = iceCallback2;
+
+     //   pc2.onicecandidate = iceCallback2;
     }
 
     function gotDescription1(desc){
         pc1.setLocalDescription(desc);
-        pc2.setRemoteDescription(desc);
-        pc2.createAnswer(gotDescription2);
+       // pc2.setRemoteDescription(desc);
+       // pc2.createAnswer(gotDescription2);
     }
 
+    /*
     function gotDescription2(desc){
-        pc2.setLocalDescription(desc);
-        pc1.setRemoteDescription(desc);
+      pc2.setLocalDescription(desc);
+      pc1.setRemoteDescription(desc);
     }
+    */
 
+    /*
     function gotRemoteStream(e){
         console.log(e);
         document.getElementById("vid2").src = URL.createObjectURL(e.stream);
     }
+    */
 
+    
     function iceCallback1(event){
       if (event.candidate) {
+         socket.emit('sendData', event);
         pc2.addIceCandidate(new RTCIceCandidate(event.candidate));
       }
     }
-          
-    function iceCallback2(event){
-      if (event.candidate) {
-        pc1.addIceCandidate(new RTCIceCandidate(event.candidate));
-      }
-    }
+    
+   
+    
+
+    // //window.addEventListener('DOMContentLoaded', function () {
+
+    //  var recorder;
+    //  var audio = document.querySelector('audio');
+    //  var video = document.querySelector('#videoStream');
+    //  var mediaStreamSource;
+    //  var success = function (stream) {
+    //      var context = new webkitAudioContext();
+    //      mediaStreamSource = context.createMediaStreamSource(stream);
+            
+    //      video.src = webkitURL.createObjectURL(stream);
+    //      // recorder = new Recorder(mediaStreamSource);
+    //      // recorder.record();
+    //  };
+
+    //  var fail = function (error) {
+    //      console.log(error);
+    //  };
+
+    //  var startRecording = function () {
+    //      navigator.webkitGetUserMedia({
+    //          video: true
+    //      },
+    //      success,
+    //      fail);
+    //  }
+
+    //  var stopRecording = function () {
+    //      mediaStreamSource.stop();
+    //      // recorder.exportWav(function (stream) {
+    //      //  audio.src = window.webkitURL.createObjectURL(stream);
+    //      // });
+    //  }
+
+    //  // var start = document.querySelector('#start');
+    //  // var stop = document.querySelector('#stop');
+
+    //  // start.click(startRecording);
+    //  // stop.click(stopRecording);
 
 
-</script>
+    //  // if (navigator.webkitGetUserMedia) {
+
+    //  //  var context = new webkitAudioContext();
+
+    //  //  navigator.webkitGetUserMedia({audio: true}, onSuccess, onFail);
+
+    //  //  function onSuccess (stream) {
+    //  //      //video.src = webkitURL.createObjectURL(stream);
+    //  //      theAudio 
+    //  //  }
+
+    //  //  function onFail (error) {
+    //  //      console.log(error);
+    //  //  }
+
+    //  //  var btnStop = document.querySelector('#stop');
+
+    //  // }
+
+    // //});
+
+    </script>
+
 </html>
