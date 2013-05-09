@@ -103,7 +103,7 @@ body {
     position: absolute;
     width: 30%;
     right: 0px;
-    top: 30px;
+    top: 0px;
     background-image: -webkit-gradient(
       linear, right top, left top, from(rgba(0,0,0,1)),
       to(rgba(0,0,0,0.2)), color-stop(100%,#333333)
