@@ -2,6 +2,8 @@ extends layout
 
 block content
   #topBar
+    img(src='lbi-small.png')
+    a.videoOption(href='http://localhost:3000') Change video
   #container
     #videoOverlay
       .section
@@ -12,9 +14,6 @@ block content
           span.latlng
         span#map
         #changeVideoControls
-          span.arrowLeft Go left
-          a.videoOption Change video
-          span.rightArrow Go right
       .section.weather
         span.weatherLabel 12/9°C
         span.temp 12/9°C
