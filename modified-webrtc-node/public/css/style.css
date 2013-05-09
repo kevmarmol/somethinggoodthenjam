@@ -95,8 +95,9 @@ body {
   #topBar {
     width: 100%;
     height: 30px;
-    background-color:#CCCCCC;
-    color:#FFFFFF;
+    background-color:#FFFFFF;
+    color:#000000;
+
   }
   #videoOverlay {
     height: 100%;
@@ -181,4 +182,12 @@ body {
 }
 .sphere{
   -webkit-filter: custom(url(http://html.adobe.com/webplatform/graphics/customfilters/cssfilterlab/shaders/vertex/spherify.vs) mix(url(http://html.adobe.com/webplatform/graphics/customfilters/cssfilterlab/shaders/fragment/spherify.fs) multiply source-atop), 50 50 border-box, amount 1, sphereRadius 0.35, sphereAxis -0.25 1 0, sphereRotation 137, ambientLight 0.17, lightPosition 1 -0.69 0.93, lightColor 1 1 1 1, transform perspective(1000) scale(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg));
+}
+
+a.videoOption {
+  z-index:999999;
+  color:#313131;
+  position:absolute;
+  top:4px;
+  left:72px;
 }
