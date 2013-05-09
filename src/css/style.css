@@ -11,6 +11,10 @@ body {
 	line-height: 1.333;
 }
 
+#app {
+	z-index: 1;
+}
+
 #app,
 .map {
 	height: 100%;
@@ -24,17 +28,45 @@ body {
 }
 
 .welcome {
-	background: rgba(255,255,255,.75);
+	background: rgba(255,255,255,.9);
 	right: 2%;
 	padding: .333em .5em;
 	position: absolute;
 	top: 2%;
 	text-align: center;
 	z-index: 2;
-	width: 25%;
+	width: 30%;
 }
 
 h1 {
 	font-family: 'Lobster', cursive;
 	font-size: 2em;
+}
+
+.overlay {
+	background: rgba(0,0,0,.5);
+	display: none;
+	height: 100%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: 2;
+}
+
+.iframe {
+	display: none;
+	height: 90%;
+	left: 5%;
+	position: absolute;
+	top: 5%;
+	width: 90%;
+	z-index: 3;
+}
+
+#secret-page {
+	border: 0;
+	display: none;
+	height: 100%;
+	width: 100%;
 }

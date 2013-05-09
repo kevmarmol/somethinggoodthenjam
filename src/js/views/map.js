@@ -51,8 +51,8 @@ define([
 			var options = {
 				chat_id: data.chat_id,
 				icon: {
-					size: new google.maps.Size(66, 57),
-					url: '/src/images/lbi-marker.png'
+					size: new google.maps.Size(60, 86),
+					url: '/src/images/jam-jar.png'
 				},
 				map: this.map,
 				position: latLng
@@ -68,12 +68,21 @@ define([
 		},
 
 		onMarkerClick: function () {
-			// App.router.navigate('window/' + this.id, {
-			// 	trigger: true
-			// });
-			//
-			 
-			window.location = "http://172.27.64.27:3300/?r=" + this.chat_id;
+			App.router.navigate('window/' + this.chat_id, {
+				trigger: true
+			});
+
+			// var url = 'http://172.27.208.29:3300/?r=' + this.chat_id;
+
+			// new WindowView({
+			// 	model: WindowModel
+			// })
+
+			$('.overlay').fadeIn(250);
+			$('.iframe').show();
+			$('#secret-page').show();
+			$('#secret-page').attr('src', 'http://bbc.co.uk');
+			//$('#secret-page').attr('src', 'http://172.27.208.29:3300/?r=' + this.chat_id);
 
 			//return this;
 		},

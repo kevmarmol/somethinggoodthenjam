@@ -7,19 +7,16 @@ define([
 
 		tagName: 'div',
 
-		className: 'window',
+		className: 'iframe',
 
 		initialize: function () {
-
 			this.render();
-
 		},
 
 		render: function () {
 
-			if (!document.querySelector('.window')) {
+			if (!document.querySelector('.iframe')) {
 				document.querySelector('#app').appendChild(this.el);
-				console.log(PinsCollection);
 			}
 
 			return this;

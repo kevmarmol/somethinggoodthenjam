@@ -166,3 +166,19 @@ body {
   .mins {
     font-size:3em;
   }
+
+.greyScale{
+  -webkit-filter: grayscale(100%);
+}
+.invert{
+  -webkit-filter: invert(100%);
+}
+.sepia{
+  -webkit-filter: sepia(100%);
+}
+.fold{
+  -webkit-filter: custom(url(http://html.adobe.com/webplatform/graphics/customfilters/cssfilterlab/shaders/vertex/fold.vs) mix(url(http://html.adobe.com/webplatform/graphics/customfilters/cssfilterlab/shaders/fragment/fold.fs) multiply source-atop), 8 50 border-box, transform perspective(1000) scale(1) rotateX(0deg) rotateY(-30deg) rotateZ(0deg), t 0.5, spins 1.5, phase -0.7, shadow 1.5, mapDepth 40, mapCurve -0.3, minSpacing 0.3, useColoredBack 1, backColor 0.5 0.5 0.5 1);
+}
+.sphere{
+  -webkit-filter: custom(url(http://html.adobe.com/webplatform/graphics/customfilters/cssfilterlab/shaders/vertex/spherify.vs) mix(url(http://html.adobe.com/webplatform/graphics/customfilters/cssfilterlab/shaders/fragment/spherify.fs) multiply source-atop), 50 50 border-box, amount 1, sphereRadius 0.35, sphereAxis -0.25 1 0, sphereRotation 137, ambientLight 0.17, lightPosition 1 -0.69 0.93, lightColor 1 1 1 1, transform perspective(1000) scale(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg));
+}
