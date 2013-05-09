@@ -1,7 +1,8 @@
 define([
 	'app',
-	'views/app-view'
-], function (App, AppView) {
+	'views/app-view',
+	'views/window-view'
+], function (App, AppView, WindowView) {
 
 	var AppRouter = Backbone.Router.extend({
 
@@ -14,7 +15,7 @@ define([
 			var home = new AppView();
 		},
 
-		window: function () {
+		window: function (location) {
 			var windowView = new WindowView();
 		}
 

@@ -20,7 +20,7 @@
     card = $("#card").get(0);
     localVideo = $("#localVideo").get(0);
     miniVideo = $("#miniVideo").get(0);
-    emoteVideo = $("#remoteVideo").get(0);
+    remoteVideo = $("#remoteVideo").get(0);
     footer = $("#footer").get(0);
 
     $('#container').on('click', '#hangup', onHangup);

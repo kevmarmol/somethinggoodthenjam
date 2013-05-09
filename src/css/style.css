@@ -5,9 +5,36 @@ body {
 	width: 100%;
 }
 
+body {
+	font-family: "Arial";
+	font-size: 1em;
+	line-height: 1.333;
+}
+
 #app,
 .map {
 	height: 100%;
 	margin: 0;
+	position: relative;
 	width: 100%;
+}
+
+.map {
+	z-index: 1;
+}
+
+.welcome {
+	background: rgba(255,255,255,.75);
+	right: 2%;
+	padding: .333em .5em;
+	position: absolute;
+	top: 2%;
+	text-align: center;
+	z-index: 2;
+	width: 25%;
+}
+
+h1 {
+	font-family: 'Lobster', cursive;
+	font-size: 2em;
 }

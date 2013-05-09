@@ -11,8 +11,6 @@ define([
 		className: 'map',
 
 		initialize: function () {
-			this.getWindows();
-			this.createMap();
 			this.render();
 		},
 
@@ -24,7 +22,8 @@ define([
 				mapTypeId: google.maps.MapTypeId.ROADMAP,
 				mapTypeControl: false,
 				panControl: false,
-				streetViewControl: false
+				streetViewControl: false,
+				zoomControl: false
 			};
 
 			this.map = new google.maps.Map(this.el, options);
@@ -50,7 +49,7 @@ define([
 		addWindowToMap: function (data) {
 			var latLng = new google.maps.LatLng(data.latitude, data.longitude);
 			var options = {
-				id: data._id,
+				chat_id: data.chat_id,
 				icon: {
 					size: new google.maps.Size(66, 57),
 					url: '/src/images/lbi-marker.png'
@@ -68,13 +67,25 @@ define([
 			return this;
 		},
 
-		onMarkerClick: function (event) {
-			console.log(event);
-			return this;
+		onMarkerClick: function () {
+			// App.router.navigate('window/' + this.id, {
+			// 	trigger: true
+			// });
+			//
+			 
+			window.location = "http://172.27.64.27:3300/?r=" + this.chat_id;
+
+			//return this;
 		},
 
 		render: function () {
-			document.querySelector('#app').appendChild(this.el);
+			if (!document.querySelector('.map')) {
+				document.querySelector('#app').appendChild(this.el);
+			}
+
+			this.createMap();
+			this.getWindows();
+
 			return this;
 		}
 
