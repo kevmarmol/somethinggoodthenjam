@@ -197,6 +197,7 @@ a.videoOption {
     position:absolute;
     top:6px;
     left:72px;
+    font-weight: bold;
 }
 .videoOverlays,
 a.videoOverlays {
