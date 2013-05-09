@@ -65,6 +65,15 @@
     console.log("Opening Socket.");
     socket = io.connect();
     socket.emit('id', appConfig);
+<<<<<<< HEAD
+=======
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            //send this via socket
+            socket.emit('sendLocation', data);
+        });
+    }
+>>>>>>> e8fc746640b2799897030e9d58035ea25b2f0e17
     socket.on('connect', onSocketOpened);
     socket.on('ready', onSocketReady);
     socket.on('message', onSocketMessage);
@@ -72,6 +81,15 @@
 
   function onSocketOpened(data) {
     console.log('Socket opened.');
+    if (navigator.geolocation) {
+
+            navigator.geolocation.getCurrentPosition(function (position) {
+                 var lat = position.coords.latitude;
+                 var lon = position.coords.longitude;
+                 console.log('my lat is:' + lat +'my long is : '+ lon);
+            });
+
+    }
   }
 
   function onSocketReady(data) {

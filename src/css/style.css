@@ -1,0 +1,13 @@
+html,
+body {
+	height: 100%;
+	margin: 0;
+	width: 100%;
+}
+
+#app,
+.map {
+	height: 100%;
+	margin: 0;
+	width: 100%;
+}

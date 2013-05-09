@@ -1,0 +1,9 @@
+{
+    "name": "geo_loc_finde",
+    "description": "geo location for lat and long",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "express": "3.x"
+    }
+}
