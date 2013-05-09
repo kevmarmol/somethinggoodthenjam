@@ -30,6 +30,8 @@ require([
 	App.router = new Router();
 
 	// start HTML5 History API
-	Backbone.history.start();
+	Backbone.history.start({
+		pushState: true
+	});
 
 });

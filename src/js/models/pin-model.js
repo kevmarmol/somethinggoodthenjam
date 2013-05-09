@@ -1,4 +1,6 @@
-define([], function () {
+define([
+	'app'
+], function (App) {
 
 	var Model = Backbone.Model.extend({
 		defaults: {},
